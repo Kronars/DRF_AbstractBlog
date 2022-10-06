@@ -1,0 +1,10 @@
+*.png
+*.jpg
+!db_scheme.png
+db.sqlite3
+__pycache__
+.pytest_cache
+blog/migrations/*
+!blog/migrations/__init__.py
+user/migrations/*
+!user/migrations/__init__.py
