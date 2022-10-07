@@ -2,6 +2,7 @@ from django.db.models import Q
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 from .models import Category, Paper
 from .serializers import (CatList, MetaPaperList, PaperCreateSerializer,
@@ -53,6 +54,7 @@ class PaperCreate(generics.CreateAPIView,
     POST paper_create/'''
     queryset = Paper.objects.all()
     serializer_class = PaperCreateSerializer
+    permission_classes = (IsAuthenticated, )
 
 
 class PaperFind(APIView):

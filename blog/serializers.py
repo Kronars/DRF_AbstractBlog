@@ -1,3 +1,4 @@
+from email.policy import default
 from django.contrib.auth.models import User
 from rest_framework import serializers
 from rest_framework.exceptions import NotFound
@@ -51,6 +52,7 @@ class PaperCreateSerializer(serializers.ModelSerializer):
     его поле "название категории" имеет тип ChoiceField
     POST paper_create/'''
     category = CatCreate()
+    user = serializers.HiddenField(default=serializers.CurrentUserDefault())
 
     class Meta:
         model   = Paper

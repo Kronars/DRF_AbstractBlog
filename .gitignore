@@ -1,3 +1,4 @@
+secret.py
 *.png
 *.jpg
 !db_scheme.png
