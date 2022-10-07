@@ -11,11 +11,11 @@ from rest_framework.test import APITestCase
 class BlogTestCase(TestCase):
     '''Модульные тесты'''
     invalid_inputs = [
-        {'title':''},
-        {'title':'A'*(MAX_TITLE_LEN+1)},
-        {'pub_date':'1-1_2047'},
-        {'pub_date':'01-01-2047'},
-        {'order':'no'}
+        {'title': ''},
+        {'title': 'A' * (MAX_TITLE_LEN + 1)},
+        {'pub_date': '1-1_2047'},
+        {'pub_date': '01-01-2047'},
+        {'order': 'no'}
     ]
 
     def setUp(self):
@@ -27,8 +27,8 @@ class BlogTestCase(TestCase):
         cat_1 = Category.objects.create(name_category='Категория 1')
         cat_2 = Category.objects.create(name_category='Категория 2')
 
-        pap_1 = Paper.objects.create(user=user_lev,  category=cat_1, title='Название 1', paper_text='Вставить текст')
-        pap_2 = Paper.objects.create(user=user_ivan, category=cat_2, title='Название 2', paper_text='Вставить текст')
+        Paper.objects.create(user=user_lev,  category=cat_1, title='Название 1', paper_text='Вставить текст')
+        Paper.objects.create(user=user_ivan, category=cat_2, title='Название 2', paper_text='Вставить текст')
 
     def test_model(self):
         user_ivan = User.objects.get(first_name='Иван')
@@ -39,10 +39,10 @@ class BlogTestCase(TestCase):
 
     def test_validate_search_params_valid(self):
         val = {
-            'title':'Название', 'name_cat':'Категория 1', 
-            'pub_date':'2001-01-01', 'order':'title', 'desc':True}
+            'title': 'Название', 'name_cat': 'Категория 1',
+            'pub_date': '2001-01-01', 'order': 'title', 'desc': True}
         answer = {
-            'title__icontains': 'Название', 'category__name_category': 'Категория 1', 
+            'title__icontains': 'Название', 'category__name_category': 'Категория 1',
             'pub_date': '2001-01-01', 'order': '-title'}
         self.assertEqual(validate_search_params(**val), answer)
 
@@ -54,8 +54,9 @@ class BlogTestCase(TestCase):
 
     def test_find_paper(self):
         val = validate_search_params('Название', 'Категория 1', order='title')
-        res = find_paper(val)[0] #?
+        res = find_paper(val)[0]   # может ведь упасть с ошибкой, хорошо бы придумать что получше
         self.assertEqual(res.title, 'Название 1')
+
 
 class BlogApiTestCase(APITestCase):
     '''Интеграционные тесты'''
@@ -68,14 +69,14 @@ class BlogApiTestCase(APITestCase):
         cat_1 = Category.objects.create(name_category='Категория 1')
         cat_2 = Category.objects.create(name_category='Категория 2')
 
-        pap_1 = Paper.objects.create(user=user_lev,  category=cat_1, title='Название 1', paper_text='Вставить текст')
-        pap_2 = Paper.objects.create(user=user_ivan, category=cat_2, title='Название 2', paper_text='Вставить текст')
+        Paper.objects.create(user=user_lev,  category=cat_1, title='Название 1', paper_text='Вставить текст')
+        Paper.objects.create(user=user_ivan, category=cat_2, title='Название 2', paper_text='Вставить текст')
 
     def test_paper_find(self):
         '''Что то типо параметризированного теста'''
         core_url = reverse('paper-find')
         params = (
-            ('?title=Название', 'Название 1'), 
+            ('?title=Название', 'Название 1'),
             ('?category=Категория 2', 'Название 2'),
             ('?title=Название&category=Категория 2&desc=True', 'Название 2'),
             ('?title=Название&category=Категория 2&order_by=category', 'Название 2'))
@@ -90,14 +91,12 @@ class BlogApiTestCase(APITestCase):
         data = (
             {
                 "category": {
-                    "name_category": "приколы"
-                    },
+                    "name_category": "приколы"},
                 "title": "1234",
                 "paper_text": "1234",
                 "paper_image": None,
-                "user": 2
-                },
-        )
+                "user": 2},)
+
         for payload in data:
             with self.subTest():
                 repl = self.client.post(url, data)

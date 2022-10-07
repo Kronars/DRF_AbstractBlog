@@ -1,7 +1,7 @@
 from rest_framework import routers
 from rest_framework.urls import path
 
-from blog.views import (CategoryList, PaperCreate, PaperDetail, 
+from blog.views import (CategoryList, PaperCreate, PaperDetail,
                         PaperFind, PaperList)
 
 router = routers.SimpleRouter()

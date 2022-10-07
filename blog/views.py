@@ -1,4 +1,3 @@
-from django.db.models import Q
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -16,7 +15,8 @@ class CategoryList(generics.ListAPIView,
     queryset = Category.objects.all()
     serializer_class = CatList
 
-class PaperList(generics.ListAPIView, 
+
+class PaperList(generics.ListAPIView,
                 viewsets.GenericViewSet):
     '''Получение мета информации о срезе статьей, от offset до limit
     GET paper/'''
@@ -32,8 +32,7 @@ class PaperList(generics.ListAPIView,
 
         if cat_filter_value:
             query = Paper.objects.filter(
-                Q(category__name_category=cat_filter_value) | Q(category__slug_category=cat_filter_value)
-                )[offset:limit]
+                category__name_category=cat_filter_value)[offset:limit]
         else:
             query = Paper.objects.all()[offset:limit]
 
@@ -62,7 +61,7 @@ class PaperFind(APIView):
     GET paper/find'''
     queryset = Paper.objects.all()
     serializer_class = MetaPaperList
-    
+
     def get(self, req):
         '''Получение параметров -> валидация парамметров -> поиск в БД -> сериализация'''
         title:    str | bool = req.query_params.get('title', False)   # Получение параметров
