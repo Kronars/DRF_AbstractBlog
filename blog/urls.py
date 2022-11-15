@@ -7,11 +7,12 @@ from blog.views import (CategoryList, PaperCreate, PaperDetail,
 router = routers.SimpleRouter()
 router.register('paper', PaperList)
 router.register('paper', PaperDetail)
-router.register('paper_create', PaperCreate, basename='paper-post')
+# router.register('paper_create', PaperCreate)
 router.register('category', CategoryList)
 
 urlpatterns = [
-    path('paper/find/', PaperFind.as_view(), name='paper-find')
+    path('paper/find/', PaperFind.as_view(), name='paper-find'),
+    path('paper/create/', PaperCreate.as_view({'post': 'post'}), name='paper-create')
     ]
 
 urlpatterns += router.urls

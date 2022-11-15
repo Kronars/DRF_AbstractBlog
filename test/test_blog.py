@@ -72,6 +72,8 @@ class BlogApiTestCase(APITestCase):
         Paper.objects.create(user=user_lev,  category=cat_1, title='Название 1', paper_text='Вставить текст')
         Paper.objects.create(user=user_ivan, category=cat_2, title='Название 2', paper_text='Вставить текст')
 
+        self.token = self.client.get('')
+
     def test_paper_find(self):
         '''Что то типо параметризированного теста'''
         core_url = reverse('paper-find')
@@ -87,7 +89,7 @@ class BlogApiTestCase(APITestCase):
                 self.assertEqual(res.data[0]['title'], param[1])
 
     def test_post_paper(self):
-        url = reverse('paper-post-create')
+        url = reverse('paper-create')
         data = (
             {
                 "category": {
@@ -95,10 +97,12 @@ class BlogApiTestCase(APITestCase):
                 "title": "1234",
                 "paper_text": "1234",
                 "paper_image": None,
-                "user": 2},)
+                "user": 2
+                },)
 
         for payload in data:
             with self.subTest():
-                repl = self.client.post(url, data)
+                print(url)
+                repl = self.client.post(url, payload, 'json')
                 print(repl)
                 print(repl.status_code)
